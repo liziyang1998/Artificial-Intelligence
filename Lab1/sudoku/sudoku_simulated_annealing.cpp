@@ -1,10 +1,6 @@
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
-#include <cstring>
-#include <random>
-#include <ctime>
-#include <cmath>
 #include "sudokuMap.h"
 
 using namespace std;
@@ -41,10 +37,10 @@ int simulated_annealing(string outputFile){
     while(T > T_min){
         cnt++;
         if (X0.H() == 0)break;
-        X1 = X0.operatorMap();
+        X1 = X0.swapMap();
         if (X0.H() >= X1.H()){
             X0 = X1;
-        }
+        }//以某一概论接受坏的解,这里设置0.9
         else if (exp((X0.H() - X1.H()) / T) > 0.9){
             X0 = X1;
         }

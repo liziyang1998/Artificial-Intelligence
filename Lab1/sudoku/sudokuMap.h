@@ -6,8 +6,6 @@
 #include <fstream>
 #include <cstring>
 #include <random>
-#include <ctime>
-#include <cmath>
 
 using namespace std;
 
@@ -60,7 +58,7 @@ public:
     }
     //随机交换某行中的两个可更改的数据
     //保证该行中不会出现重复
-    Map operatorMap(){
+    Map swapMap(){
         int col, row1, row2;
         Map ret;
         while(true){
@@ -77,8 +75,29 @@ public:
         swap(ret.Sudoku[col][row1], ret.Sudoku[col][row2]);
         return ret;
     }
+    //随机更换某个位置的值
+    Map variationMap(){
+        int col, row;
+        Map ret;
+        while(true){
+            col = uniform_int_distribution<int>(0, n-1)(rng);
+            row = uniform_int_distribution<int>(0, n-1)(rng);
+            if (!unChanged[col][row])break;
+        }
+        bool flag[20];
+        memset(flag, 0, sizeof(flag));
+        for (int i = 0; i < n; i++)
+            flag[Sudoku[col][i]] = true;
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                ret.Sudoku[i][j] = Sudoku[i][j], ret.unChanged[i][j] = unChanged[i][j];
+        for (int i = i; i <= k; i++)
+            if (!flag[i])
+                ret.Sudoku[col][row] = i;
+        return ret;
+    }
     //评估函数，每列中重复元素个数，不用考虑每行，随机填充时保证每行不存在重复元素
-    int H(){
+    int H() const{
         int ret = 0;
         bool flag[20];
         for (int i = 0; i < n; i++){
@@ -89,6 +108,9 @@ public:
             }
         }
         return ret;
+    }
+    bool operator < (const Map &A)const{
+        return H() > A.H();
     }
 private:
     //外界不可更改
