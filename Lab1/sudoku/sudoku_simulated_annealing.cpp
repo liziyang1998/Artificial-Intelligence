@@ -8,6 +8,7 @@ using namespace std;
 Map initMap;
 
 int fileIO(string inputFile){
+    startTime = clock();
     fileName.open(inputFile);
     if (!fileName.is_open()){
         return -1;
@@ -47,6 +48,8 @@ int simulated_annealing(string outputFile){
         T = T * r;
     }
     X0.Print();
+    endTime = clock();
+    fileName << (double)(endTime - startTime) / CLOCKS_PER_SEC << 's' << endl;
     X0.PrintFile();
 
     fileName.close();

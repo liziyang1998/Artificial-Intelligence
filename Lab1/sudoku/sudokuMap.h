@@ -119,9 +119,10 @@ private:
     bool unChanged[20][20];
 };
 
-const int gaSum = 20;
+const int gaSum = 50;
 double crossFactor = 0.9;
-double variationFactor = 0.01;
+double variationFactor = 0.05;
 priority_queue<Map> population, tmpPopulation;
+clock_t startTime, endTime;
 
 #endif

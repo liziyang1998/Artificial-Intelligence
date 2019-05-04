@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <queue>
+#include <ctime>
 #include "sudokuMap.h"
 
 using namespace std;
@@ -9,6 +10,7 @@ using namespace std;
 Map initMap;
 
 int fileIO(string inputFile){
+    startTime = clock();
     fileName.open(inputFile);
     if (!fileName.is_open()){
         return -1;
@@ -64,12 +66,21 @@ int genetic_algorithm(string outputFile){
         }
         //结束标志
         if (X[0].H() == 0)break;
-        //后80%进行交叉
+        //后crossFactor进行交叉
         for (int i = gaSum * (1 - crossFactor); i < gaSum; i+=2){
             if (i == gaSum - 1)break;
             auto item = Cross(X[i], X[i+1]);
             X[i] = item.first; X[i+1] = item.second;
         }
+        // //随机80%进行交叉
+        // for (int i = 0; i < gaSum; i++){
+        //     if (i == gaSum - 1)break;
+        //     double x = (double)uniform_int_distribution<int>(0, 1000)(rng) / 1000;
+        //     if (x <= crossFactor){
+        //         auto item = Cross(X[i], X[i+1]);
+        //         X[i] = item.first; X[i+1] = item.second;
+        //     }
+        // }
         //以一定概率变异
         for (int i = 0; i < gaSum; i++){
             double x = (double)uniform_int_distribution<int>(0, 1000)(rng) / 1000;
@@ -81,8 +92,11 @@ int genetic_algorithm(string outputFile){
         for (int i = 0; i < gaSum; i++)
             population.push(X[i]);
     }
-    cout << cnt << endl;
+    // cout << cnt << endl;
     X[0].Print();
+    endTime = clock();
+    fileName << (double)(endTime - startTime) / CLOCKS_PER_SEC << 's' << endl;
+    X[0].PrintFile();
 
     fileName.close();
     return 0;
@@ -103,4 +117,5 @@ int main(int argc, char * argv[]){
         printf("Open File Faill\n");
         return 0;
     }
+    return 0;
 }
