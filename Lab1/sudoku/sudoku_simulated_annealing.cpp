@@ -49,6 +49,7 @@ int simulated_annealing(string outputFile){
     }
     X0.Print();
     endTime = clock();
+    cout << (double)(endTime - startTime) / CLOCKS_PER_SEC << 's' << endl;
     fileName << (double)(endTime - startTime) / CLOCKS_PER_SEC << 's' << endl;
     X0.PrintFile();
 
