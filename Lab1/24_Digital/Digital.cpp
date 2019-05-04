@@ -18,6 +18,7 @@ public:
     size_t genSeed() const{
         return HASH();
     }
+	//错位棋子数
 	int H1() const{
 		int cnt = 1;
 		int ret = 0;
@@ -30,6 +31,7 @@ public:
 		}
 		return ret;
 	}
+	//错位棋子数 + 曼哈顿距离 * 0.4
 	int H2() const{
 		int cnt = 1;
 		double ret = 0;
@@ -58,6 +60,7 @@ public:
 		cout << endl;
 	}
 private:
+	//计算每种答案的hash，判重
 	size_t HASH() const{
 		hash<string>h;
         string Str;
@@ -67,6 +70,7 @@ private:
 		size_t ret = h(Str);
 		return ret;
 	}
+	//获取棋子位置
 	pair<int, int> getPos(int num) const{
 		if (num == 0)return {4, 4};
 		num--;
@@ -74,15 +78,16 @@ private:
 	}
 };
 
+//方向和对应的操作
 int dx[4] = {0, 0, 1, -1};
 int dy[4] = {1, -1, 0, 0};
 char Direction[4] = {'R', 'L', 'D', 'U'};
 //R L D U
-//open
+//open 队列
 priority_queue<Map>F;
-//close
+//close 队列
 set<size_t>visited;
-
+//判断是否是边界联通块
 bool Unicom(int x, int y){
 	if (x == 0 && y == 2)return true;
 	if (x == 4 && y == 2)return true;
@@ -91,6 +96,7 @@ bool Unicom(int x, int y){
 	return false;
 }
 
+//普通A*
 int cnt = 0;
 pair<string, int> Digital(Map initMap){
     F.push(initMap);
@@ -106,7 +112,7 @@ pair<string, int> Digital(Map initMap){
 		if(item.H2() == 0){
 			return {item.Answer, item.g};
 		}
-		factory = item.g / 10 + 2;
+		// factory = item.g / 10 + 2;
 		// cout << item.g <<  " ";
         int x = item.x;
         int y = item.y;
@@ -147,7 +153,7 @@ pair<string, int> Digital(Map initMap){
         }
     }
 }
-
+//迭代加深A*
 pair<string, int> ID_Digital(Map initMap){
 	int deepLimit = initMap.H2();
 	int nextDeepLimit;
