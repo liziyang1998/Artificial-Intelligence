@@ -217,6 +217,10 @@ pair<string, int> ID_Digital(Map initMap){
 }
 
 int main(int argc, char * argv[]){
+    if (argc <= 2){
+        printf("Paraments Error\n");
+        return 0;
+    }
 	clock_t start = clock();
     fstream fileName;
     fileName.open(argv[1]);
@@ -234,11 +238,19 @@ int main(int argc, char * argv[]){
             }
         }
     }
+	fileName.close();
 	initMap.Answer = '\0';
 	initMap.g = 0;
     auto item = Digital(initMap);
-	cout << cnt << endl;
-	cout << item.first << " " << item.second << endl;
 	clock_t end = clock();
+
+	fileName.open(argv[2]);
+	cout << cnt << endl;
 	cout << (double)(end - start) / CLOCKS_PER_SEC << 's' << endl;
+	cout << item.first << " " << item.second << endl;
+
+	fileName << (double)(end - start) / CLOCKS_PER_SEC << 's' << endl;
+	fileName << item.first << " " << item.second << endl;
+	fileName.close();
+	return 0;
 }
