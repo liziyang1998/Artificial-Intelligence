@@ -23,10 +23,6 @@ int fileIO(string inputFile){
     return 0;
 }
 //遗传算法
-const int gaSum = 20;
-double crossFactor = 0.8;
-double variationFactor = 0.01;
-priority_queue<Map>population, tmpPopulation;
 //两个个体交叉，只换行，保证每行不重复
 pair<Map, Map> Cross(Map X0, Map X1){
     int x = uniform_int_distribution<int>(0, n-2)(rng);

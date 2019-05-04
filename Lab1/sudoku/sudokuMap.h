@@ -6,6 +6,7 @@
 #include <fstream>
 #include <cstring>
 #include <random>
+#include <queue>
 
 using namespace std;
 
@@ -117,5 +118,10 @@ private:
     //保存哪些位置不可更改
     bool unChanged[20][20];
 };
+
+const int gaSum = 20;
+double crossFactor = 0.9;
+double variationFactor = 0.01;
+priority_queue<Map> population, tmpPopulation;
 
 #endif
