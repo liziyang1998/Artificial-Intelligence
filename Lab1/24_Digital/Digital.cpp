@@ -46,6 +46,9 @@ public:
 				cnt %= 25;
 			}
 		}
+		//乘1适合小步数，
+		//2适合中等步数
+		//3适合长布数
 		return (int)(ret * 3);
 	}
 	bool operator < (const Map A)const{
@@ -102,7 +105,6 @@ pair<string, int> Digital(Map initMap){
     F.push(initMap);
 	size_t n = initMap.genSeed();
 	visited.insert(n);
-	int factory = 1;
     while(!F.empty()){
 		cnt++;
         auto item = F.top();
@@ -112,8 +114,6 @@ pair<string, int> Digital(Map initMap){
 		if(item.H2() == 0){
 			return {item.Answer, item.g};
 		}
-		// factory = item.g / 10 + 2;
-		// cout << item.g <<  " ";
         int x = item.x;
         int y = item.y;
         for (int i = 0; i < 4; i++){
@@ -132,7 +132,7 @@ pair<string, int> Digital(Map initMap){
 				newMap.x = tx; newMap.y = ty;
 				size_t n = newMap.genSeed();
 				if (visited.count(n))continue;
-				newMap.f = newMap.g + newMap.H2() * factory;
+				newMap.f = newMap.g + newMap.H2();
 				F.push(newMap);
 			}
             else if (tx < 0 || tx >= 5 || ty < 0 || ty >= 5)
@@ -147,7 +147,7 @@ pair<string, int> Digital(Map initMap){
 				newMap.x = tx; newMap.y = ty;
 				size_t n = newMap.genSeed();
 				if (visited.count(n))continue;
-				newMap.f = newMap.g + newMap.H2() * factory;
+				newMap.f = newMap.g + newMap.H2();
 				F.push(newMap);
 			}
         }
@@ -247,16 +247,17 @@ int main(int argc, char * argv[]){
 	fileName.close();
 	initMap.Answer = '\0';
 	initMap.g = 0;
+	//ID_Digital 是迭代加深A*
     auto item = Digital(initMap);
 	clock_t end = clock();
 
 	fileName.open(argv[2]);
 	cout << cnt << endl;
 	cout << (double)(end - start) / CLOCKS_PER_SEC << 's' << endl;
-	cout << item.first << " " << item.second << endl;
+	cout << item.first << endl << item.second << endl;
 
 	fileName << (double)(end - start) / CLOCKS_PER_SEC << 's' << endl;
-	fileName << item.first << " " << item.second << endl;
+	fileName << item.first << endl << item.second << endl;
 	fileName.close();
 	return 0;
 }
